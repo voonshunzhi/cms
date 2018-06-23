@@ -69,6 +69,37 @@ function checkIfUserIsLoggedInAndRedirect($redirectLocation){
     }
     
 }
+
+function email_exists($email){
+    
+    global $pdo;
+    
+    try{
+        $prepare = $pdo -> prepare("SELECT * FROM users WHERE user_email = :email");
+        $prepare -> bindParam(':email',$email);
+        $prepare -> execute();
+        
+    }catch(Exception $e){
+        echo $e -> getMessage();
+        return false;
+    }
+    
+    if($prepare -> rowCount() > 0){
+        return true;
+    }else{
+        return false;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+}
 function insertCategories(){
     global $pdo;
     if(isset($_POST['submit'])){

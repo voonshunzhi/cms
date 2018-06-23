@@ -64,6 +64,12 @@
 									</div>
 
 
+                                    <div class="form-group">
+                                        
+                                        <div><a href="forgot.php">Forgot password?</a></div>
+                                        
+                                    </div>
+                                
 								</form>
 
 							</div><!-- Body-->
