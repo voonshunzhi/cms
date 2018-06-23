@@ -8,7 +8,6 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 require "vendor/autoload.php";
-require "admin/class/Config.php";
 
 
 //    if(!isset($_GET['forgot']) || !ifItIsMethod('get')){
@@ -34,6 +33,8 @@ require "admin/class/Config.php";
                    echo $e -> getMessage();
                }
                
+               
+               //Big purpose : To send email to email server,so you need to say which server to send to, what to be sent(just like the configuration of email client like Gmail and Yahoo)
                $mail = new PHPMailer(true);
 
                try {
@@ -60,13 +61,23 @@ require "admin/class/Config.php";
 //                    $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
 
                     //Content
-//                    $mail->isHTML(true);                                  // Set email format to HTML
+                    $mail->isHTML(true);                                  // Set email format to HTML
                     $mail->Subject = 'Here is the subject';
-                    $mail->Body    = '<h1>こんにちは</h1>';
+                    $mail->Body    = "<h3>Click on the link to reset your email</h3>
+                    <div><a href='http://localhost:80/cms/reset.php?email={$email}&token={$token}'>http://localhost:80/cms/reset.php?email={$email}&token={$token}</div>
+                    ";
 //                    $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
-                    $mail->send();
-                    echo 'Message has been sent';
+                    if($mail->send()){
+                        
+                        $email_sent = true;
+                        
+                    }else{
+                        
+                        $email_sent = false;
+                        
+                    }
+                   
                 } catch (Exception $e) {
                     echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
                 }
@@ -86,6 +97,8 @@ require "admin/class/Config.php";
 
 
 <!-- Page Content -->
+
+
 <div class="container">
 
     <div class="form-gap"></div>
@@ -96,7 +109,7 @@ require "admin/class/Config.php";
                     <div class="panel-body">
                         <div class="text-center">
 
-
+                        <?php if(!isset($email_sent)){?>
                                 <h3><i class="fa fa-lock fa-4x"></i></h3>
                                 <h2 class="text-center">Forgot Password?</h2>
                                 <p>You can reset your password here.</p>
@@ -119,7 +132,11 @@ require "admin/class/Config.php";
 
                                         <input type="hidden" class="hide" name="token" id="token" value="">
                                     </form>
-
+                        <?php }else{?>
+                              
+                              <h3>Please check your email!</h3>
+                              
+                        <?php } ?>
                                 </div><!-- Body-->
 
                         </div>

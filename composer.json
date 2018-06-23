@@ -1,5 +1,12 @@
 {
     "name": "asus/cms",
+    
+    "autoload":{
+        "classmap":[
+            "admin/classes/"
+        ]
+    },
+    
     "authors": [
         {
             "name": "Voon",
@@ -9,4 +16,6 @@
     "require": {
         "phpmailer/phpmailer": "~6.0"
     }
+    
+    
 }
