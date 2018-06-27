@@ -8,6 +8,83 @@
         
         redirect('/cms/login');
         
+    }else{
+        
+        $email = $_GET['email'];
+        $token = $_GET['token'];
+        
+        try{
+            $prepare = $pdo -> prepare("SELECT * FROM users WHERE user_email = :email AND token = :token");
+            $prepare -> bindParam(':email',$email);
+            $prepare -> bindParam(':token',$token);
+            $prepare -> execute();
+        }catch(Exception $e){
+            echo $e -> getMessage();
+        }
+        
+        if($prepare -> rowCount() == 0){
+            
+            redirect('/cms/login');
+            
+        }else{
+            
+            while($row = $prepare -> fetch(PDO::FETCH_ASSOC)){
+                
+                $email_get = $row['user_email'];
+                $token_get = $row['token'];
+                $username = $row['username'];
+                
+                
+                
+            } 
+        }
+        
+        if(isset($_POST['submit'])){
+            
+        
+        if(isset($_POST['password']) && isset($_POST['confirmPassword'])){
+            
+            if($_POST['password'] == $_POST['confirmPassword']){
+                
+                $successful = false;
+                
+                $password = $_POST['password'];
+                
+                $hashed_password = md5($password);
+                
+                $token = '';
+                
+                try{
+                    
+                    $prepare = $pdo -> prepare("UPDATE users SET token = :token, user_password = :password,randSalt = :hashed_password");
+                    $prepare -> bindParam(':token',$token);
+                    $prepare -> bindParam(':password',$password);
+                    $prepare -> bindParam(':hashed_password',$hashed_password);
+                    $prepare -> execute();
+                    
+                    $successful = true;
+                    
+                }catch(Exception $e){
+                    
+                    echo $e -> getMessage();
+                    
+                }
+                
+                
+                if($successful){
+                    
+                    redirect("/cms/login");
+                    
+                }
+                
+            }
+            
+            
+            
+        }
+        }
+        
+        
     }
 
 
@@ -27,12 +104,12 @@
                                 <p>You can reset your password here.</p>
                                 <div class="panel-body">
                                     <div class="form-wrap">
-                                            <form role="form" action="registration.php" method="post" id="login-form" autocomplete="off">
+                                            <form role="form" method="post" id="login-form" autocomplete="off">
                                                 <div class="form-group">
-                                                    <input type="text" name="username" id="username" class="form-control" placeholder="Enter Password">
+                                                    <input type="password" name="password" id="password" class="form-control" placeholder="Enter Password">
                                                 </div>
                                                  <div class="form-group">
-                                                    <input type="text" name="email" id="email" class="form-control" placeholder="Confirm Password">
+                                                    <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" placeholder="Confirm Password">
                                                 </div>
 
                                                 <input type="submit" name="submit" id="btn-login" class="btn btn-custom btn-lg btn-block btn-primary" value="Reset Password">

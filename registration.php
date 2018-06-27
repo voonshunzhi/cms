@@ -6,6 +6,30 @@
     
     <?php  include "include/navigation.php"; ?>
     
+
+<?php 
+//Pusher for real-time message
+
+require "vendor/autoload.php";
+
+$dotenv = new Dotenv\Dotenv(__DIR__);
+$dotenv->load();
+
+ $options = array(
+    'cluster' => 'ap1',
+    'encrypted' => true
+  );
+  $pusher = new Pusher\Pusher(
+    getenv('APP_KEY'),
+    getenv('APP_SECRET'),
+    getenv('APP_ID'),
+    $options
+  );
+
+  
+
+
+?>
  <?php 
     if(isset($_POST['submit'])){
         $username = strip_tags($_POST['username']);
@@ -25,6 +49,13 @@
                 $prepare -> bindParam(":protect",$protected_password);
                 $prepare -> execute();
                 echo "Your registration has been submitted for review";
+                
+                
+                $data['message'] = "{$username} with the email of {$email} has registered for your apps!Check it out <a href='users.php'>here!</a>";
+                $pusher->trigger('my-channel', 'my-event', $data);
+                
+                
+                
             }catch(Exception $e){
                 echo $e -> getMessage();
             }
@@ -32,6 +63,8 @@
             echo "Please fill in all the blank field";
         }
     }
+
+
 
 
 
@@ -75,3 +108,6 @@
 
 
 <?php include "include/footer.php";?>
+
+
+

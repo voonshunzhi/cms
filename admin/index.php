@@ -1,5 +1,7 @@
 <?php include "includes/header.php"; ?>
-   
+<?php include "includes/redirect.php"; ?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <div id="wrapper">
 
        
@@ -352,3 +354,20 @@
         <!-- /#page-wrapper -->
 
  <?php include "includes/footer.php"; ?> 
+ 
+ <script src="https://js.pusher.com/4.1/pusher.min.js"></script>
+<script>
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('ff8eb1a90e1b23bb680c', {
+      cluster: 'ap1',
+      encrypted: true
+    });
+
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', function(data) {
+      toastr.success(data.message);
+    });
+  </script>

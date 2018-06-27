@@ -1,5 +1,5 @@
 <?php include "includes/header.php"; ?>
-
+<?php include "includes/redirect.php"; ?>
     <div id="wrapper">
 
         <!-- Navigation -->

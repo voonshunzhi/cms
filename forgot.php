@@ -7,7 +7,7 @@
 <?php 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-require "vendor/autoload.php";
+require "vendor/autoload.php";//will autoload the required file correspondingly 
 
 
 //    if(!isset($_GET['forgot']) || !ifItIsMethod('get')){
